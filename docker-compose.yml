@@ -1,0 +1,30 @@
+version: "3"
+services:
+ php:
+  build: './php/'
+  container_name: php-app
+  networks:
+   - backend
+  volumes:
+   - ./public_html/:/var/www/html/
+ apache:
+  build: './apache'
+  container_name: web-apache
+  depends_on:
+   - php
+   - mysql
+  networks:
+   - backend
+  ports:
+   - 8080:80
+  volumes:
+   - ./public_html/:/var/www/html/
+ mysql:
+  image: mysql:5.6.40
+  container_name: mysql
+  environment:
+   MYSQL_ROOT_PASSWORD: 
+  networks:
+   - backend
+networks:
+ backend: 
